@@ -1,8 +1,12 @@
-import classes from './NewPostForm.module.css';
+import { Form, useNavigate, useNavigation } from "react-router-dom";
+import classes from "./NewPostForm.module.css";
 
-function NewPostForm({ onCancel, onSubmit, submitting }) {
+function NewPostForm() {
+  const navigate = useNavigate();
+  const navigation = useNavigation();
+
   return (
-    <form className={classes.form} onSubmit={onSubmit}>
+    <Form className={classes.form} method="post" action="/blog/new">
       <fieldset>
         <label htmlFor="title">Title</label>
         <input id="title" type="text" name="title" required minLength={5} />
@@ -17,13 +21,17 @@ function NewPostForm({ onCancel, onSubmit, submitting }) {
           rows={5}
         ></textarea>
       </fieldset>
-      <button type="button" onClick={onCancel} disabled={submitting}>
+      <button
+        type="button"
+        disabled={navigation.state === "submitting"}
+        onClick={() => navigate("/blog")}
+      >
         Cancel
       </button>
-      <button disabled={submitting}>
-        {submitting ? 'Submitting...' : 'Create Post'}
+      <button>
+        {navigation.state === "idle" ? "Create Post" : "Submitting..."}
       </button>
-    </form>
+    </Form>
   );
 }
 

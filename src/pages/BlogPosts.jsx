@@ -1,36 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useLoaderData } from "react-router-dom";
 
-import Posts from '../components/Posts';
-import { getPosts } from '../util/api';
+import Posts from "../components/Posts";
+import { getPosts } from "../util/api";
 
 function BlogPostsPage() {
-  const [error, setError] = useState();
-  const [posts, setPosts] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    async function loadPosts() {
-      setIsLoading(true);
-      try {
-        const posts = await getPosts();
-        setPosts(posts);
-      } catch (err) {
-        setError(err.message);
-      }
-      setIsLoading(false);
-    }
-
-    loadPosts();
-  }, []);
+  const { posts } = useLoaderData();
+  const reverse = Array.from(posts).reverse();
 
   return (
     <>
       <h1>Our Blog Posts</h1>
-      {isLoading && <p>Loading posts...</p>}
-      {error && <p>{error}</p>}
-      {!error && posts && <Posts blogPosts={posts} />}
+      <Posts blogPosts={reverse} />
     </>
   );
 }
 
+async function loader() {
+  const posts = await getPosts();
+  return { posts };
+}
+
+export { loader };
 export default BlogPostsPage;
