@@ -1,12 +1,15 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import BlogLayout from "./pages/BlogLayout";
-import BlogPostsPage, { loader as blogPostsLoader } from "./pages/BlogPosts";
+// import BlogPostsPage, { loader as blogPostsLoader } from "./pages/BlogPosts";
 import NewPostPage, { action as newPostAction } from "./pages/NewPost";
 import PostDetailPage, { loader as postDetailLoader } from "./pages/PostDetail";
 import RootLayout from "./components/RootLayout";
 import WelcomePage from "./pages/Welcome";
 import ErrorPage from "./pages/errorPage";
+import DeferredBlogPostsPage, {
+  loader as deferedBlogLoader,
+} from "./components/DeferredBlogPostsPage";
 
 const router = createBrowserRouter([
   {
@@ -23,8 +26,8 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <BlogPostsPage />,
-                loader: blogPostsLoader,
+                element: <DeferredBlogPostsPage />,
+                loader: deferedBlogLoader,
               },
               {
                 path: ":id",
